@@ -17,7 +17,7 @@ public class JobLoggerRefactored {
     private static boolean logError;
     private boolean initialized;
     private static Map dbParams;
-    private static Logger logger;
+    private Logger logger;
     private static JobLoggerBuilder builder;
     private List<InternalLogger> internalLoggersChoosen;
 
@@ -29,25 +29,23 @@ public class JobLoggerRefactored {
         this.logger = Logger.getLogger("MyLog");
     }
 
-    public void logError(String messageText) throws IOException {
+    public void logError(String messageText) throws Exception {
         this.logMessage(messageText, MessageTypeEnum.ERROR);
     }
 
-    public void logWarning(String messageText) throws IOException {
+    public void logWarning(String messageText) throws Exception {
         this.logMessage(messageText, MessageTypeEnum.WARNING);
     }
 
-    public void logInfo(String messageText) throws IOException {
+    public void logInfo(String messageText) throws Exception {
         this.logMessage(messageText, MessageTypeEnum.INFO);
     }
 
-    private void logMessage(String messageText, MessageTypeEnum type) throws IOException {
+    private void logMessage(String messageText, MessageTypeEnum type) throws Exception {
         if(!internalLoggersChoosen.isEmpty()) {
             for (InternalLogger item: internalLoggersChoosen) {
                 item.logMessage(getFormatedMessage(messageText, type), logger);
             }
-        } else {
-
         }
     }
 
@@ -86,18 +84,18 @@ public class JobLoggerRefactored {
             this.builderFinal = new JobLoggerBuilderFinal(this);
         }
 
-        public JobLoggerBuilderFinal onLog4File() {
-            builderFinal.getInternalLoggers().add(getLog4File());
+        public JobLoggerBuilderFinal onLog4File(boolean actived) {
+        	if(actived) builderFinal.getInternalLoggers().add(getLog4File());
             return this.builderFinal;
         }
 
-        public JobLoggerBuilderFinal onLog4Console() {
-            builderFinal.getInternalLoggers().add(getLog4Console());
+        public JobLoggerBuilderFinal onLog4Console(boolean actived) {
+        	if(actived) builderFinal.getInternalLoggers().add(getLog4Console());
             return this.builderFinal;
         }
 
-        public JobLoggerBuilderFinal onLog4Db() {
-            builderFinal.getInternalLoggers().add(getLog4Db());
+        public JobLoggerBuilderFinal onLog4Db(boolean actived) {
+        	if(actived) builderFinal.getInternalLoggers().add(getLog4Db());
             return this.builderFinal;
         }
 
@@ -134,18 +132,18 @@ public class JobLoggerRefactored {
             return new JobLoggerRefactored(builder.internalLoggers);
         }
 
-        public JobLoggerBuilderFinal onLog4File() {
-            builder.onLog4File();
+        public JobLoggerBuilderFinal onLog4File(boolean actived) {
+            builder.onLog4File(actived);
             return this;
         }
 
-        public JobLoggerBuilderFinal onLog4Console() {
-            builder.onLog4Console();
+        public JobLoggerBuilderFinal onLog4Console(boolean actived) {
+            builder.onLog4Console(actived);
             return this;
         }
 
-        public JobLoggerBuilderFinal onLog4Db() {
-            builder.onLog4Db();
+        public JobLoggerBuilderFinal onLog4Db(boolean actived) {
+            builder.onLog4Db(actived);
             return this;
         }
 
