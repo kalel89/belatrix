@@ -33,8 +33,9 @@ public class JobLoggerRefactored {
         this.logMessage(messageText, MessageTypeEnum.INFO);
     }
 
-    private void logMessage(String messageText, MessageTypeEnum type) throws Exception {
-        if(!internalLoggersChoosen.isEmpty()) {
+    private void logMessage(String messageTextParam, MessageTypeEnum type) throws Exception {
+        String messageText = messageTextParam != null && messageTextParam.trim().length() > 0  ? messageTextParam.trim() : null;
+        if(messageText != null && !internalLoggersChoosen.isEmpty()) {
             for (InternalLogger item: internalLoggersChoosen) {
                 item.logMessage(getFormatedMessage(messageText, type), logger);
             }
