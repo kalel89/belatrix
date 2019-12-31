@@ -9,14 +9,6 @@ import java.util.*;
 import java.util.logging.Logger;
 
 public class JobLoggerRefactored {
-    private static boolean logToFile;
-    private static boolean logToConsole;
-    private static boolean logToDatabase;
-    private static boolean logMessage;
-    private static boolean logWarning;
-    private static boolean logError;
-    private boolean initialized;
-    private static Map dbParams;
     private Logger logger;
     private static JobLoggerBuilder builder;
     private List<InternalLogger> internalLoggersChoosen;
